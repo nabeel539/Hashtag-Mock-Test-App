@@ -51,6 +51,13 @@ export const signupUser = async (req, res) => {
       success: true,
       message: "Signup Successful",
       token,
+      userId: newUser._id,
+      user: {
+        id: newUser._id,
+        fullname: newUser.fullname,
+        email: newUser.email,
+        mobile: newUser.mobile,
+      },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -96,6 +103,13 @@ export const loginUser = async (req, res) => {
       message: "Login successful",
       role: "user",
       token,
+      userId: existingUser._id,
+      user: {
+        id: existingUser._id,
+        fullname: existingUser.fullname,
+        email: existingUser.email,
+        mobile: existingUser.mobile,
+      },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
