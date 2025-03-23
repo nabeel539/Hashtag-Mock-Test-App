@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import adminRoutes from "./routes/adminRoutes.js";
-import userRoutes from "./routes/authRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import connectDB from "./config/db.js";
 import cors from "cors";
 
@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/admin", adminRoutes);
-app.use("/api/auth", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // Listen on port
 const PORT = process.env.PORT || 5000;

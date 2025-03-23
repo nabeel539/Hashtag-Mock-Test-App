@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js"; // Import User model
+import Test from "../models/testModel.js";
 
 // User Signup
 export const signupUser = async (req, res) => {
@@ -93,9 +94,69 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
+      role: "user",
       token,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// get All Tests
+export const getAllTests = async (req, res) => {
+  try {
+    // Fetch all tests with status "active"
+    const tests = await Test.find({ status: "active" }).select("-__v");
+
+    // If no tests found, return a message
+    if (!tests || tests.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No active tests found",
+      });
+    }
+
+    // Return the list of active tests
+    res.status(200).json({
+      success: true,
+      message: "Active tests fetched successfully",
+      data: tests,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// gettestbyId
+export const getTestById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the test by ID
+    const test = await Test.findById(id);
+
+    // If test not found, return 404
+    if (!test) {
+      return res.status(404).json({
+        success: false,
+        message: "Test not found",
+      });
+    }
+
+    // Return the test details
+    res.status(200).json({
+      success: true,
+      message: "Test fetched successfully",
+      data: test,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch test",
+      error: error.message,
+    });
   }
 };
